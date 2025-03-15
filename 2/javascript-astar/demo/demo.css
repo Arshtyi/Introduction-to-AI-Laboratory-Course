@@ -1,0 +1,124 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #222;
+}
+
+h2 {
+    font-weight: normal;
+}
+
+.links {
+    clear: both;
+    background: rgba(0, 0, 0, .1);
+    padding: 4px 4px 5px 20px;
+}
+
+.links a {
+    padding: 3px;
+    color: #339;
+}
+
+#content {
+    margin: 0 auto;
+    width: 98%;
+}
+
+#header, #footer {
+    background: #ddf;
+}
+
+#header h1 {
+    float: left;
+    margin: 0 0 10px 5px;
+}
+
+#header {
+    border-bottom: solid 8px #333;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#footer {
+    border-top: solid 2px #fff;
+    margin-top: 20px;
+    padding-top: 5px;
+}
+
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#message {
+    color: #f00;
+    font-size: 1.2em;
+}
+
+#controls {
+    border: dashed 3px #9999BB;
+    border-left: none;
+    border-right: none;
+    margin-bottom: 25px;
+    padding: 5px 0;
+    width: 650px;
+}
+
+#search_grid {
+    width: 650px;
+    height: 650px;
+    position: relative;
+}
+
+.grid_item {
+    display: block;
+    border: 1px solid #bbb;
+    float: left;
+    line-height: 12px;
+    font-size: 10px;
+}
+
+.grid_item.legend {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+}
+
+.grid_item.wall {
+    background-color: #000000;
+}
+
+.grid_item.weight1 {
+    background-color: #ffffff;
+}
+
+.grid_item.weight2 {
+    background-color: #dddddd;
+}
+
+.grid_item.weight3 {
+    background-color: #bbbbbb;
+}
+
+.grid_item.start {
+    background-color: #66ccff;
+}
+
+.grid_item.active {
+    background-color: #ee0000;
+}
+
+.grid_item.finish {
+    background-color: #66ccff;
+}
+
+#weightsKey {
+    display: none;
+}

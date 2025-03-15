@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Expert System</title>
+        <style>
+            .whole {
+                width: 100%;
+            }
+
+            .whole td {
+                width: calc(100% / 4);
+                vertical-align: top;
+            }
+
+            .function {
+                width: 80%;
+                height: 100px;
+                margin: 20px 0;
+            }
+
+            .fields {
+                text-align: center;
+                /* background-color:bisque; */
+                padding: 30px 0;
+            }
+
+            .fields button {
+                width: 70px;
+            }
+
+            .rule {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table class="whole">
+            <tr id="display">
+                <td id="rulesDisplay">
+                    <h1>Rules</h1>
+                    <ul id="rulesList"></ul>
+                </td>
+                <td id="factsDisplay">
+                    <h1>Facts</h1>
+                    <ul id="factsList">
+                        <li>fact 1</li>
+                        <li>fact 2</li>
+                    </ul>
+                </td>
+                <td id="resultsDisplay">
+                    <h1>Results</h1>
+                    <ul id="resultsList">
+                        <li>result 1</li>
+                        <li>result 2</li>
+                    </ul>
+                </td>
+                <td id="function">
+                    <button id="addRulesButton" class="function">
+                        <b>Reset</b> and add other rules
+                    </button>
+                    <button id="addFactsButton" class="function">
+                        add facts
+                    </button>
+                    <button id="resetButton" class="function">reset</button>
+                    <div id="fields" class="fields">
+                        <!-- 添加规则和结果 -->
+                        <div
+                            id="rulesField"
+                            style="background-color: cornflowerblue"
+                        >
+                            <div id="condition">
+                                输入前提:
+                                <div id="conditionInput">
+                                    <input type="text" />
+                                </div>
+                                <button id="addConditionButton">AND</button
+                                ><br />
+                            </div>
+
+                            <div id="result">
+                                输入结论:<br />
+                                <input type="text" id="conclusion" />
+                            </div>
+                            <button id="addARuleButton">add</button><br />
+                            <button id="addRulesDone">done</button>
+                        </div>
+                        <!-- 添加事实 -->
+                        <div
+                            id="factsField"
+                            style="background-color: antiquewhite"
+                        >
+                            输入事实:<br />
+                            <input type="text" id="factInputField" />
+                            <button id="addAFactButton">add</button><br />
+                            <button id="addFactsDone">done</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <script>
+            function Rule(conditions, conclusion, weights) {
+                this.conditions = conditions;
+                this.conclusion = conclusion;
+                this.weights = weights; // 添加权重属性
+                this.unsatisfiedConditions = conditions.size;
+            }
+            let rulesSet = new Set();
+            let factsSet = new Set();
+
+            let rulesList = document.querySelector("#rulesList");
+            let factsList = document.querySelector("#factsList");
+            let resultsList = document.querySelector("#resultsList");
+
+            let functionField = document.querySelector("#function");
+
+            // rules
+            let addRulesButton = document.querySelector("#addRulesButton");
+            let addConditionButton = document.querySelector(
+                "#addConditionButton"
+            );
+            let conditionInputList = document.querySelector("#conditionInput");
+            let addRulesDone = document.querySelector("#addRulesDone");
+            let conclusion = document.querySelector("#conclusion");
+
+            // facts
+            let addFactsButton = document.querySelector("#addFactsButton");
+            let factInputField = document.querySelector("#factInputField");
+
+            // reset
+            let resetButton = document.querySelector("#resetButton");
+
+            let rulesField = document.querySelector("#rulesField");
+            let factsField = document.querySelector("#factsField");
+
+            // add rules
+            addRulesButton.addEventListener("click", function () {
+                resetButton.click();
+                addRulesButton.disabled = true;
+                addFactsButton.disabled = true;
+                resetButton.disabled = true;
+                fields.append(rulesField);
+                while (conditionInputList.hasChildNodes()) {
+                    conditionInputList.removeChild(
+                        conditionInputList.lastChild
+                    );
+                }
+                conditionInputList.append(document.createElement("input"));
+                conclusion.value = "";
+            });
+            document
+                .querySelector("#addARuleButton")
+                .addEventListener("click", function () {
+                    let newRuleDisplay = `
+                <span class="rule">rule:</span><br>
+                conditions:
+                <ul>
+            `;
+                    let newConditions = new Set();
+                    for (let ruleInput of conditionInputList.childNodes) {
+                        if (ruleInput.nodeName !== "INPUT") {
+                            continue;
+                        }
+                        newConditions.add(ruleInput.value);
+                        newRuleDisplay += `<li>${ruleInput.value}</li>`;
+                    }
+                    newRuleDisplay += `
+                </ul>
+                result:
+                <ul>
+                    <li>${conclusion.value}</li>
+                </ul>
+            `;
+                    let newRuleDisplayNode = document.createElement("li");
+                    newRuleDisplayNode.innerHTML = newRuleDisplay;
+                    rulesList.append(newRuleDisplayNode);
+                    rulesSet.add(new Rule(newConditions, conclusion.value));
+                    while (conditionInputList.hasChildNodes()) {
+                        conditionInputList.removeChild(
+                            conditionInputList.lastChild
+                        );
+                    }
+                    conditionInputList.append(document.createElement("input"));
+                    conclusion.value = "";
+                });
+            document
+                .querySelector("#addConditionButton")
+                .addEventListener("click", function () {
+                    conditionInputList.append(document.createElement("br"));
+                    conditionInputList.append(document.createElement("input"));
+                });
+            addRulesDone.addEventListener("click", function () {
+                rulesField.remove();
+                addRulesButton.disabled = false;
+                addFactsButton.disabled = false;
+                resetButton.disabled = false;
+            });
+            rulesField.remove();
+
+            // add facts
+            addFactsButton.addEventListener("click", function () {
+                addRulesButton.disabled = true;
+                addFactsButton.disabled = true;
+                resetButton.disabled = true;
+                factInputField.value = "";
+                fields.append(factsField);
+            });
+            document
+                .querySelector("#addAFactButton")
+                .addEventListener("click", function () {
+                    let aFactText =
+                        document.querySelector("#factInputField").value;
+                    if (!factsSet.has(aFactText)) {
+                        let toProcessQ = [aFactText];
+                        let newFactNode = document.createElement("li");
+                        newFactNode.innerHTML = `<li>${aFactText}</li>`;
+                        factsList.appendChild(newFactNode);
+                        let newResultNode;
+                        while (toProcessQ.length !== 0) {
+                            let toProcessFact = toProcessQ.pop();
+                            newResultNode = document.createElement("li");
+                            newResultNode.innerHTML = `<li>${toProcessFact}</li>`;
+                            resultsList.append(newResultNode);
+                            if (!factsSet.has(toProcessFact)) {
+                                factsSet.add(toProcessFact);
+
+                                let maxScore = 0;
+                                let bestConclusion = null;
+
+                                for (let rule of rulesSet) {
+                                    if (rule.conditions.has(toProcessFact)) {
+                                        rule.unsatisfiedConditions--;
+                                        if (rule.unsatisfiedConditions === 0) {
+                                            let score = 0;
+                                            for (let condition of rule.conditions) {
+                                                score +=
+                                                    rule.weights.get(condition);
+                                            }
+                                            if (score > maxScore) {
+                                                maxScore = score;
+                                                bestConclusion =
+                                                    rule.conclusion;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (bestConclusion !== null) {
+                                    toProcessQ.push(bestConclusion);
+                                    rulesSet.delete(bestConclusion);
+                                }
+                            }
+                        }
+                    }
+                    document.querySelector("#factInputField").value = "";
+                });
+
+            factsField.remove();
+
+            //reset
+            resetButton.addEventListener("click", function () {
+                // reset rules
+                while (rulesList.hasChildNodes()) {
+                    rulesList.removeChild(rulesList.lastChild);
+                }
+                // reset facts
+                while (factsList.hasChildNodes()) {
+                    factsList.removeChild(factsList.lastChild);
+                }
+                // reset results
+                while (resultsList.hasChildNodes()) {
+                    resultsList.removeChild(resultsList.lastChild);
+                }
+                init();
+            });
+
+            // initiation
+            // TODO [3] 请补全初始化函数
+            function init() {
+                // 预期功能：
+                // 1. 清空规则集和事实集
+                // 2. 添加以下预设规则：
+                //    a. 条件：有毛发 → 结论：是哺乳动物 (下方示例)
+                //    b. 条件：有羽毛 → 结论：是鸟
+                //    c. 条件：会飞 AND 下蛋 → 结论：是鸟 (下方示例)
+                //    d. 条件：吃肉 → 结论：是肉食动物
+                //    e. 条件：犬齿 AND 有爪 AND 眼盯前方 → 结论：是肉食动物
+                //    f. 条件：是哺乳动物 AND 有蹄 → 结论：是蹄类动物
+                //    g. 添加你的自定义规则
+                rulesSet.clear();
+                factsSet.clear();
+
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("有毛发"),
+                        "是哺乳动物",
+                        new Map([["有毛发", 1]])
+                    )
+                );
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("有羽毛"),
+                        "是鸟",
+                        new Map([["有羽毛", 1]])
+                    )
+                );
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("会飞").add("下蛋"),
+                        "是鸟",
+                        new Map([
+                            ["会飞", 0.5],
+                            ["下蛋", 0.5],
+                        ])
+                    )
+                );
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("吃肉"),
+                        "是肉食动物",
+                        new Map([["吃肉", 1]])
+                    )
+                );
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("犬齿").add("有爪").add("眼盯前方"),
+                        "是肉食动物",
+                        new Map([
+                            ["犬齿", 0.33],
+                            ["有爪", 0.33],
+                            ["眼盯前方", 0.34],
+                        ])
+                    )
+                );
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("是哺乳动物").add("有蹄"),
+                        "是蹄类动物",
+                        new Map([
+                            ["是哺乳动物", 0.5],
+                            ["有蹄", 0.5],
+                        ])
+                    )
+                );
+                rulesSet.add(
+                    new Rule(
+                        new Set().add("有毛发"),
+                        "是昆虫",
+                        new Map([["有毛发", 1]])
+                    )
+                );
+                rulesList.innerHTML = `
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>有毛发</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是哺乳动物</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>有奶</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是哺乳动物</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>有羽毛</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是鸟</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>会飞</li>
+                            <li>下蛋</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是鸟</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>吃肉</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是肉食动物</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>犬齿</li>
+                            <li>有爪</li>
+                            <li>眼盯前方</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是肉食动物</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>是哺乳动物</li>
+                            <li>有蹄</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是蹄类动物</li>
+                        </ul>
+                    </li>
+                    <!-- 根据上面补充的自定义规则，在下面补充对应的html表格元素 -->
+                    <!-- ...... -->
+                    <li>
+                        <span class="rule">rule:</span><br>
+                        conditions:
+                        <ul>
+                            <li>有毛发</li>
+                        </ul>
+                        result:
+                        <ul>
+                            <li>是昆虫</li>
+                        </ul>
+                    </li>
+
+            `;
+            }
+
+            function addRule(conditions, result) {
+                let aFact = document.createElement("li");
+                let something = document.createElement("span");
+                something.setAttribute("class", "rule");
+                something.textContent = "rule:";
+                aFact.appendChild(something);
+                aFact.appendChild(document.createElement("br"));
+                aFact.append("conditions:");
+                let conditionsList = document.createElement("ul");
+                for (const conditionContent of conditions) {
+                    let aCondition = document.createElement("li");
+                    aCondition.textContent = conditionContent;
+                    conditionsList.appendChild();
+                }
+                aFact.appendChild(conditionsList);
+                afact.append("result:");
+                let resultList = document.createElement("ul");
+                let resulttt = document.createElement("li");
+                resulttt.textContent = result;
+                resultList.append(resulttt);
+                aFact.append(resultList);
+            }
+
+            init();
+        </script>
+    </body>
+</html>
