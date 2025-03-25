@@ -1,0 +1,6 @@
+*.pdf
+!实验指导3.pdf
+Script/
+*.zip
+*.docx
+pca_data.json

@@ -151,8 +151,8 @@ var astar = {
 
         // Basic implementation of the A* algorithm with multiple opportunities for optimization
 
-        var openList = new PriorityQueue();
-        //var openList = new BinaryHeap();
+        // var openList = new PriorityQueue();
+        var openList = new BinaryHeap();
         var closedList = new Set();
 
         openList.enqueue(start, start.f);

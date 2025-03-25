@@ -1,1 +1,5 @@
 模板/
+node_modules/
+.idea/
+.vscode/
+.venv/

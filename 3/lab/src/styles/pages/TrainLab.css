@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+.train-lab-control {
+    @apply flex flex-col justify-center;
+}
+
+.train-control-button button {
+    @apply w-[100px] h-[75px];
+}
+
+.train-lab-button-container {
+    @apply flex justify-center gap-2 m-1;
+}
+
+.train-lab-button-container button {
+    @apply px-2.5 py-0.5 text-base font-bold text-white bg-blue-500 border-0 cursor-pointer;
+    @apply transition-all duration-300 ease-in-out;
+    @apply hover:bg-blue-600 focus:outline-none;
+}
