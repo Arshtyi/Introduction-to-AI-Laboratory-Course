@@ -203,8 +203,8 @@ async function train(model, data) {
     };
 
     const BATCH_SIZE = 128;
-    const TRAIN_DATA_SIZE = 20000;
-    const TEST_DATA_SIZE = 1000;
+    const TRAIN_DATA_SIZE = 10000;
+    const TEST_DATA_SIZE = 500;
 
     const trainSet = tf.tidy(() => {
         const d = data.nextTrainBatch(TRAIN_DATA_SIZE);

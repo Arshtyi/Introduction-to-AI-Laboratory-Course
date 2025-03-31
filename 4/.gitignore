@@ -1,0 +1,7 @@
+*.pdf
+*.zip
+!实验指导4.pdf
+Script/
+my_model/
+*.docx
+node_modules/

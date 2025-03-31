@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.practice-lab-container {
+    @apply m-auto bg-white p-5 text-center;
+}
+
+.practice-lab-title {
+    @apply text-3xl text-gray-800 mb-2.5;
+}
+
+.practice-lab-subtitle {
+    @apply text-lg text-gray-600 mb-5;
+}
+
+.grid-container {
+    @apply flex justify-center mb-5;
+}
+
+.practice-lab-button-container {
+    @apply flex justify-center gap-5;
+}
+
+.practice-lab-button-container button {
+    @apply px-5 py-2.5 w-[150px] text-xl cursor-pointer border-0 text-white;
+}
+
+.clear-button {
+    @apply bg-red-500 px-10 py-5;
+}
+
+.predict-button {
+    @apply bg-green-500 px-10 py-5 hover:bg-green-600;
+}
+
+.prediction-container {
+    @apply mt-5 bg-gray-200 p-2.5 rounded-md;
+}
+
+.prediction-text {
+    @apply text-xl text-gray-800;
+}

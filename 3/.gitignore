@@ -4,3 +4,5 @@ Script/
 *.zip
 *.docx
 pca_data.json
+lab/public/my_model/my_model.weights.bin
+lab/public/my_model/my_model.json
