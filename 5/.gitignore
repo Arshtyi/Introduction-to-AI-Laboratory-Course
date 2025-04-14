@@ -1,0 +1,4 @@
+*.pdf
+!实验指导5.pdf
+*.docx
+*.webui_secret_key

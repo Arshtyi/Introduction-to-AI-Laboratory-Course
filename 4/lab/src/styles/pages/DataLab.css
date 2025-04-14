@@ -1,0 +1,27 @@
+@reference "tailwindcss";
+
+.data-lab-container {
+    @apply flex gap-8;
+}
+
+.data-lab-control {
+    @apply flex flex-col justify-center;
+}
+
+.data-lab-control p {
+    @apply text-lg font-bold mb-1;
+}
+
+.data-control-button button {
+    @apply w-[90px];
+}
+
+.data-lab-button-container {
+    @apply flex justify-center gap-1 m-0.5;
+}
+
+.data-lab-button-container button {
+    @apply px-2.5 py-0.5 text-base font-bold text-white bg-blue-500 border-0 cursor-pointer;
+    @apply transition-all duration-300 ease-in-out;
+    @apply hover:bg-blue-600 focus:outline-none;
+}

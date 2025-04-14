@@ -1,0 +1,38 @@
+@reference "tailwindcss";
+
+#tfjs-visor-container * {
+    line-height: revert;
+}
+
+.visor-controls button {
+    background-color: revert;
+    border: revert;
+}
+
+.tf-surface * {
+    display: revert;
+}
+
+.tutorial-container iframe {
+    @apply w-screen h-[80vh];
+}
+
+.bottom-bar {
+    @apply flex w-screen h-[20vh] bg-gray-200 border-t-[3px] border-t-gray-500 pr-[calc(100vw-550px)];
+}
+
+.bottom-bar-container {
+    @apply m-auto text-center;
+}
+
+@media (min-width: 1100px) {
+    .bottom-bar {
+        @apply pr-[550px];
+    }
+}
+
+@media (max-width: 550px) {
+    .bottom-bar {
+        @apply p-0;
+    }
+}

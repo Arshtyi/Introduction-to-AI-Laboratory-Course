@@ -1,0 +1,14 @@
+@reference "tailwindcss";
+
+.grid-row {
+    @apply flex m-0 p-0;
+}
+
+
+.pixel {
+    @apply bg-black border border-gray-700 m-0 p-0;
+}
+
+.active_pixel {
+    @apply bg-white border border-white m-0 p-0;
+}
