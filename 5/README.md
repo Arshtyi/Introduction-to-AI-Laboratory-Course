@@ -1,1 +1,2 @@
-[lab5-2](https://github.com/datawhalechina/learn-nlp-with-transformers)
+-   [lab5-2](https://github.com/datawhalechina/learn-nlp-with-transformers)
+-   出于环境污染问题，建议使用 docker

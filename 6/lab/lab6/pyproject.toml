@@ -1,0 +1,14 @@
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[project]
+name = "lab6"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10.1",
+    "opencv-python>=4.11.0.86",
+    "pip>=23.3.2"
+]
